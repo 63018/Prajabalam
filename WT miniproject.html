@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Prajabalam</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+
+<style>
+
+/* BACKGROUND */
+body{
+    margin:0;
+    font-family: Arial;
+    background: url("bg.png.png") no-repeat center/cover;
+    text-align:center;
+    color:#f0f0f0;
+}
+
+/* LIGHT OVERLAY */
+body::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.3);
+    z-index:-1;
+}
+
+/* HERO */
+.hero{
+    padding:40px 10px;
+}
+
+.hero h1{
+    font-size:110px;
+    font-family:'Oswald', sans-serif;
+    margin:0;
+    letter-spacing:5px;
+    color:#0d3b66;
+}
+
+.hero p{
+    font-size:22px;
+    font-family:'Playfair Display', serif;
+    color:#1b2a49;
+}
+
+/* ABOUT */
+.about{
+    margin-top:30px;
+    font-size:20px;
+    font-family:'Playfair Display', serif;
+    width:70%;
+    margin:auto;
+    color:#222;
+}
+
+/* BUTTON */
+.join-btn{
+    margin-top:30px;
+    padding:15px 40px;
+    font-size:18px;
+    background:linear-gradient(to right,#ff512f,#dd2476);
+    color:white;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+/* POPUP */
+.popup{
+    position:fixed;
+    top:0;
+    left:100%;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    transition:0.5s;
+    overflow:auto;
+}
+
+.popup.active{
+    left:0;
+}
+
+/* FORM */
+.box{
+    background:rgba(255,255,255,0.9);
+    width:420px;
+    margin:40px auto;
+    padding:20px;
+    border-radius:15px;
+    color:#222;
+    position:relative;
+}
+
+/* FORM GROUP */
+.form-group{
+    display:flex;
+    margin:6px 0;
+}
+
+.form-group label{
+    width:150px;
+    font-weight:bold;
+}
+
+.form-group input,.form-group select{
+    flex:1;
+    padding:6px;
+}
+
+/* CLOSE */
+.close{
+    background:red;
+    color:white;
+    border:none;
+    float:right;
+}
+
+/* OUR ARMY BUTTON (RIGHT BOTTOM) */
+.army-btn{
+    position:absolute;
+    right:20px;
+    bottom:20px;
+    background:#0d3b66;
+    color:white;
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* TABLE */
+.army-box{
+    display:none;
+    margin-top:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+td,th{
+    padding:6px;
+    border:1px solid #ccc;
+}
+
+/* FOOTER */
+.footer{
+    position:fixed;
+    bottom:10px;
+    left:15px;
+    font-size:14px;
+    color:#111;
+    text-align:left;
+}
+
+/* RESPONSIVE */
+@media (max-width:600px){
+
+    .hero h1{
+        font-size:50px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .about{
+        width:90%;
+        font-size:16px;
+    }
+
+    .box{
+        width:90%;
+        margin:20px auto;
+    }
+
+    .form-group{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-group label{
+        width:100%;
+        margin-bottom:5px;
+    }
+
+    .form-group input,
+    .form-group select{
+        width:100%;
+    }
+
+    .join-btn{
+        width:100%;
+    }
+
+    .army-btn{
+        right:10px;
+        bottom:10px;
+        font-size:12px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+<h1>PRAJABALAM</h1>
+<p>A strong nation is built by strong citizens</p>
+</div>
+
+<div class="about">
+Prajabalam is a people-driven political movement focused on transparency, development, and equality. 
+We aim to bring honest leadership and citizen participation into governance.
+</div>
+
+<button class="join-btn" onclick="openForm()">Join Movement</button>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+<div class="box">
+
+<button class="close" onclick="closeForm()">X</button>
+
+<h3>Join Prajabalam</h3>
+
+<div class="form-group"><label>First Name</label><input id="fname"></div>
+<div class="form-group"><label>Last Name</label><input id="lname"></div>
+<div class="form-group"><label>DOB</label><input id="dob" placeholder="dd/mm/yyyy"></div>
+<div class="form-group"><label>Phone</label><input id="phone"></div>
+<div class="form-group"><label>Aadhar</label><input id="aadhar"></div>
+<div class="form-group"><label>Voter ID</label><input id="voter"></div>
+
+<div class="form-group">
+<label>Role</label>
+<select id="role"></select>
+</div>
+
+<button class="join-btn" onclick="addMember()">JOIN</button>
+
+<!-- OUR ARMY -->
+<button class="army-btn" onclick="toggleArmy()">Our Army</button>
+
+<!-- TABLE -->
+<div class="army-box" id="armyBox">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Role</th>
+<th>Phone</th>
+</tr>
+</thead>
+<tbody id="tableData"></tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+© 2026 Prajabalam Party <br>
+Empowering People | Strengthening Nation <br>
+prajabalam175@gmail.com
+</div>
+
+<script>
+
+let members = JSON.parse(localStorage.getItem("members")) || [];
+
+/* POPUP */
+function openForm(){ popup.classList.add("active"); }
+function closeForm(){ popup.classList.remove("active"); }
+
+/* ROLE CONTROL */
+function updateRoleOptions(){
+let role=document.getElementById("role");
+role.innerHTML=`<option value="">Select</option>`;
+let hasLeader=members.some(m=>m.role==="Leader");
+if(!hasLeader) role.innerHTML+=`<option>Leader</option>`;
+role.innerHTML+=`<option>Member</option><option>Volunteer</option>`;
+}
+
+/* SHOW MEMBERS */
+function showMembers(){
+let table=document.getElementById("tableData");
+table.innerHTML="";
+members.forEach(m=>{
+table.innerHTML+=`
+<tr>
+<td>${m.name}</td>
+<td>${m.role}</td>
+<td>${m.phone}</td>
+</tr>`;
+});
+updateRoleOptions();
+}
+
+/* TOGGLE ARMY */
+function toggleArmy(){
+let box=document.getElementById("armyBox");
+box.style.display = box.style.display==="block" ? "none" : "block";
+}
+
+/* ADD MEMBER */
+function addMember(){
+
+let fn=fname.value;
+let ln=lname.value;
+let db=dob.value;
+let ph=phone.value;
+let ad=aadhar.value;
+let vt=voter.value;
+let rl=role.value;
+
+if(fn==""||ln==""||db==""||ad==""||vt==""||rl==""){
+alert("Fill all fields"); return;
+}
+
+if(!/^\d{2}\/\d{2}\/\d{4}$/.test(db)){
+alert("DOB must be dd/mm/yyyy"); return;
+}
+
+let age=new Date(db.split("/").reverse().join("-"));
+if(new Date().getFullYear()-age.getFullYear()<18){
+alert("Must be 18+"); return;
+}
+
+if(!/^\d{12}$/.test(ad)){
+alert("Aadhar must be 12 digits"); return;
+}
+
+if(!/^[A-Z]{3}\d{7}$/.test(vt)){
+alert("Voter ID must be ABC1234567"); return;
+}
+
+members.push({
+name:fn+" "+ln,
+role:rl,
+phone:ph
+});
+
+localStorage.setItem("members",JSON.stringify(members));
+
+showMembers();
+closeForm();
+}
+
+/* INIT */
+showMembers();
+
+</script>
+
+</body>
+</html>
